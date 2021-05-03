@@ -1,14 +1,13 @@
 import React, { useState } 	from 'react';
-import { REGISTER }			from '../../cache/mutations';
+import { UPDATE }			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
-import { useHistory } from 'react-router-dom';
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
-const CreateAccount = (props) => {
+const UpdateAccount = (props) => {
 	const [input, setInput] = useState({ email: '', password: '', name: ''});
 	const [loading, toggleLoading] = useState(false);
-	const [Register] = useMutation(REGISTER);
+	const [Update] = useMutation(UPDATE);
 
 	
 	const updateInput = (e) => {
@@ -17,38 +16,30 @@ const CreateAccount = (props) => {
 		setInput(updated);
 	};
 
-	const history = useHistory();
-
-	const handleCreateAccount = async (e) => {
+	const handleUpdateAccount = async (e) => {
 		for (let field in input) {
 			if (!input[field]) {
 				alert('All fields must be filled out to register');
 				return;
 			}
 		}
-		const { loading, error, data } = await Register({ variables: { ...input } });
+		const { loading, error, data } = await Update({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
 			console.log(data)
 			toggleLoading(false);
-			if(data.register.email === 'already exists') {
-				alert('User with that email already registered');
-			}
-			else {
-				props.fetchUser();
-			}
-			props.setShowCreate(false);
-			history.push('/mapselect');
+			props.fetchUser();
+			props.setShowUpdate(false);
 
 		};
 	};
 
 	return (
 
-		<WModal className="signup-modal" visible={props.showCreate}>
-			<WMHeader className="modal-header" onClose={() => props.setShowCreate(false)}>
-				Create A New Account
+		<WModal className="signup-modal" visible={props.showUpdate}>
+			<WMHeader className="modal-header" onClose={() => props.setShowUpdate(false)}>
+				Update Account
 			</WMHeader>
 
 			{
@@ -58,7 +49,7 @@ const CreateAccount = (props) => {
 							<WCol size="6">
 								<WInput 
 									className="" onBlur={updateInput} name="name" labelAnimation="up" 
-									barAnimation="solid" labelText="Name" wType="outlined" inputType="text" 
+									barAnimation="solid" labelText="First Name" wType="outlined" inputType="text" 
 								/>
 							</WCol>
 						</WRow>
@@ -76,11 +67,11 @@ const CreateAccount = (props) => {
 					</WMMain>
 			}
 			<WMFooter>
-				<WButton className="modal-button" onClick={handleCreateAccount}  clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-					Create Account
+                <WButton className="modal-button" onClick={handleUpdateAccount}  clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+					Update
 				</WButton>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<WButton className="modal-button-cancel" onClick={() => props.setShowCreate(false)} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
+				<WButton className="modal-button-cancel" onClick={() => props.setShowUpdate(false)} clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
 					Cancel
 				</WButton>
 			</WMFooter>
@@ -88,4 +79,4 @@ const CreateAccount = (props) => {
 	);
 }
 
-export default CreateAccount;
+export default UpdateAccount;

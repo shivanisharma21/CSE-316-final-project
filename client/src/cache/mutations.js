@@ -25,3 +25,13 @@ export const LOGOUT = gql`
 		logout 
 	}
 `;
+
+export const UPDATE = gql`
+	mutation Update($email: String!, $password: String!, $name: String!) {
+		update(email: $email, password: $password, name: $name) {
+			email
+			password
+			name
+		}
+	}
+`;

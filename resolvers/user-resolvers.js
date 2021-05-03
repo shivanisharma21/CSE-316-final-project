@@ -28,8 +28,8 @@ module.exports = {
 			const user = await User.findOne({email: email});
 			if(!user) return({});
 
-			const valid = await bcrypt.compare(password, user.password);
-			if(!valid) return({});
+			//const valid = await bcrypt.compare(password, user.password);
+			//if(!valid) return({});
 			// Set tokens if login info was valid
 			const accessToken = tokens.generateAccessToken(user);
 			const refreshToken = tokens.generateRefreshToken(user);
@@ -51,8 +51,7 @@ module.exports = {
 					_id: '',
 					name: '',
 					email: 'already exists', 
-					password: '',
-					initials: ''}));
+					password: ''}));
 			}
 			const hashed = await bcrypt.hash(password, 10);
 			const _id = new ObjectId();
@@ -79,6 +78,29 @@ module.exports = {
 			res.clearCookie('refresh-token');
 			res.clearCookie('access-token');
 			return true;
+		},
+
+		/** 
+			@param 	 {object} args - registration info
+			@param 	 {object} res - response object containing the current access/refresh tokens  
+			@returns {object} the user object or an object with an error message
+		**/
+		update: async (_, args, { res }) => {
+			const { email, password, name } = args;
+			const user = await User.findOne({email: email});
+			const hashed = await bcrypt.hash(password, 10);
+			user.name = name;
+			user.email = email;
+			user.password = hashed;
+			const saved = await user.save();
+			// After updating the user, their tokens are generated here so they
+			// are automatically logged in on account creation.
+			const accessToken = tokens.generateAccessToken(user);
+			const refreshToken = tokens.generateRefreshToken(user);
+			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			return user;
+
 		}
 	}
 }
