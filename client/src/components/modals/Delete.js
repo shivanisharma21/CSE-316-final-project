@@ -3,9 +3,9 @@ import React from 'react';
 import { WModal, WMHeader, WMMain, WButton } from 'wt-frontend';
 
 const Delete = (props) => {
-
+    
     const handleDelete = async () => {
-        props.deleteList(props.activeid);
+        props.deleteMap(props.entryid);
         props.setShowDelete(false);
     }
 
@@ -16,7 +16,7 @@ const Delete = (props) => {
 			</WMHeader>
 
             <WMMain>
-                <WButton className="modal-button cancel-button" onClick={() => props.setShowDelete(false)} wType="texted">
+                <WButton className="modal-button-cancel" onClick={() => props.setShowDelete(false)} wType="texted">
                     Cancel
 				</WButton>
                 <label className="col-spacer">&nbsp;</label>

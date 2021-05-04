@@ -35,3 +35,21 @@ export const UPDATE = gql`
 		}
 	}
 `;
+
+export const ADD_MAP = gql`
+	mutation AddMap($map: MapInput!) {
+		addMap(map: $map) 
+	}
+`;
+
+export const EDIT_MAP = gql`
+	mutation EditMap($_id: String!, $name: String!) {
+		editMap(_id: $_id, name: $name)
+	}
+`;
+
+export const DELETE_MAP = gql`
+	mutation DeleteMap($_id: String!) {
+		deleteMap(_id: $_id)
+	}
+`;

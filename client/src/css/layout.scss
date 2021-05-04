@@ -18,6 +18,33 @@ html {
     height: 100%;
     display: flex;
 }
+
+.map-container {
+    width: 600px;
+    height: 500px;
+    position: relative;
+    left: 15%;
+    top: 15%;
+    overflow-y: scroll;
+}
+
+.map-entries {
+    overflow-y: scroll;
+}
+
+.map-entry {
+    height: 46px;
+    padding: 12px 24px;
+}
+
+.map-delete-button {
+    margin-left: 24px;
+    float: right;
+    font-weight: bold;
+    //display: flex;
+    //align-items: center;
+}
+
 .welcome {
    position: relative;
    left: auto;

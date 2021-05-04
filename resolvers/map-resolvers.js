@@ -29,5 +29,38 @@ module.exports = {
 			if(map) return map;
 			else return ({});
 		},
+	},
+	Mutation: {
+		addMap: async(_, args) => {
+			const {map} = args;
+			const {id, name, owner, regions} = map;
+			const objectId = new ObjectId();
+			const newMap = new Map({
+				_id: objectId,
+				id: id,
+				name: name,
+				owner: owner,
+				regions: regions
+			});
+			const updated = newMap.save();
+			if(updated) return objectId;
+			else return ('Could not add map');
+		},
+
+		editMap: async (_, args) => {
+			const {_id, name} = args;
+			const mapId = new ObjectId(_id);
+			const updated = await Map.updateOne({_id: mapId}, { name: name });
+			if(updated) return (mapId);
+			else return ("Could not edit map");
+		},
+
+		deleteMap: async (_, args) => {
+			const {_id} = args;
+			const mapId = new ObjectId(_id);
+			const deleted = await Map.deleteOne({_id: mapId});
+			if(deleted) return true;
+			else return false;
+		}
 	}
 }

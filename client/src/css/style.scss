@@ -20,6 +20,7 @@
     --font-primary:'Consolas', sans-serif;
     --crimson: #DC143C;
     --magenta: #FF00FF;
+    --warm-white-transparent: #f9f7f111;
 }
 html, body {
     margin: 0;
@@ -63,4 +64,27 @@ html, body {
 }
 .modal-button-cancel {
     background-color: $modal-button-color !important;
+}
+.map-container {
+    background-color: white;
+}
+.maps-header {
+    text-align: center !important;
+}
+.new-map-button {
+    background-color: $primary-color;
+    color: black;
+    font-weight: bold;
+}
+.map-entry {
+    border-bottom: 1px solid;
+    transition: 0.1s ease-in-out;
+}
+.map-entry:hover {
+    background-color: var(--warm-white-transparent);
+    color: $primary-color;
+}
+.input-text {
+    color: black !important;
+    background-color: white;
 }
