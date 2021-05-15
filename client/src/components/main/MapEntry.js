@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WButton, WInput, WRow, WCol } from 'wt-frontend';
-import WLayout from 'wt-frontend/build/components/wlayout/WLayout';
 import Delete 							from '../modals/Delete';
+import { useHistory } from 'react-router-dom';
 
 
 const MapEntry = (props) => {
@@ -13,12 +13,20 @@ const MapEntry = (props) => {
     const setShowDelete = () => {
 		toggleShowDelete(!showDelete)
 	};
-    
+
     const handleNameEdit = (e) => {
-        toggleNameEdit(false);
-        const newName = e.target.value ? e.target.value : ' Double Click To Enter Map Name';
+        e.stopPropagation();
+        toggleNameEdit(!editingName);
+    }
+    
+    const handleSubmitNameEdit = (e) => {
+        handleNameEdit(e);
+        const newName = e.target.value ? e.target.value : 'Untitled';
         props.editMap(entry._id, newName);
     }
+
+    const history = useHistory();
+
 
     return (
         <div>
@@ -26,17 +34,23 @@ const MapEntry = (props) => {
             <WCol size="12">
             {
                 editingName
-                ? <WInput className="input-text"
-                onBlur={handleNameEdit}
+                ? <WInput className="input-text" 
+                onBlur={handleSubmitNameEdit}
                 autoFocus={true} defaultValue={name} type='text'
-                wType="outlined" barAnimation="solid" 
+                wType="outlined"  barAnimation="solid"
                 />
-                : <div onDoubleClick={() => toggleNameEdit(!editingName)} onClick= {() =>props.handleSetCurrent(entry._id)} >
+                : <div onClick= {() => history.push({
+                    pathname: '/regionspreadsheet',
+                    state: {details: entry._id}
+                })} >
                     {name}
                 </div>
             }
-            <WButton className="map-delete-button" shape="rounded" size="small" color="primary" onClick={setShowDelete}>
-                X
+            <WButton className="map-entry-button" shape="rounded" size="small" onClick={handleNameEdit}>
+                <i className="material-icons">edit</i>
+            </WButton>
+            <WButton className="map-delete-button" shape="rounded" size="small"  onClick={setShowDelete}>
+                <i className="material-icons">delete_outline</i>
             </WButton>
             </WCol>
         </WRow>

@@ -6,7 +6,6 @@ import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WNavItem, WButton } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLFooter } from 'wt-frontend';
 import UpdateAccount                    from '../modals/UpdateAccount';
-import Delete 							from '../modals/Delete';
 import NavbarOptions from '../navbar/NavbarOptions';
 import MapEntry from '../main/MapEntry';
 
@@ -53,7 +52,7 @@ const MapSelect = (props) => {
         const newMap = {
             _id:'',
             id: lastID,
-            name: ' Double Click To Enter Map Name',
+            name: 'Untitled',
             owner: props.user._id,
             regions: []
         };

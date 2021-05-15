@@ -1,6 +1,7 @@
 import React 			from 'react';
 import Homescreen 		from './components/homescreen/Homescreen';
 import MapSelect		from './components/main/MapSelect';
+import RegionSpreadsheet from './components/main/RegionSpreadsheet';
 import { useQuery } 	from '@apollo/client';
 import * as queries 	from './cache/queries';
 import { jsTPS } 		from './utils/jsTPS';
@@ -35,6 +36,14 @@ const App = () => {
 					name="mapselect" 
 					render={() => 
 						<MapSelect tps={transactionStack} fetchUser={refetch} user={user} />
+					} 
+				
+				/>
+				<Route
+					path="/regionspreadsheet" 
+					name="regionspreadsheet" 
+					render={() => 
+						<RegionSpreadsheet tps={transactionStack} fetchUser={refetch} user={user} />
 					} 
 				
 				/>
