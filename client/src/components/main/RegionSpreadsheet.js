@@ -3,7 +3,7 @@ import Logo 							from '../navbar/Logo';
 import { GET_DB_MAPS } 				from '../../cache/queries';
 import * as mutations 					from '../../cache/mutations';
 import { useMutation, useQuery } 		from '@apollo/client';
-import { WNavbar, WNavItem, WButton } 	from 'wt-frontend';
+import { WNavbar, WNavItem, WButton, WRow, WCol } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLFooter } from 'wt-frontend';
 import UpdateAccount                    from '../modals/UpdateAccount';
 import NavbarOptions from '../navbar/NavbarOptions';
@@ -18,6 +18,14 @@ const RegionSpreadsheet = (props) => {
     const [currentRegion, setCurrentRegion] = useState({});
     const [showUpdate, toggleShowUpdate]    = useState(false);
 
+    const location = useLocation();
+    let currentMapId = '';
+    let regionName = 'Default';
+    if (location.state) {
+        currentMapId = location.state.id; 
+        regionName = location.state.name;
+    }
+
     let maps = [];
     let regions = [];
 
@@ -31,14 +39,6 @@ const RegionSpreadsheet = (props) => {
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
 	if(data) {maps = data.getAllMaps;}
-
-    const location = useLocation();
-    let currentMapId = '';
-    let regionName = 'Default';
-    if (location.state) {
-        currentMapId = location.state.details; 
-
-    }
     
 
     const refetchRegions  = async (refetch) => {
@@ -66,8 +66,8 @@ const RegionSpreadsheet = (props) => {
 			<WLHeader>
 				<WNavbar color="colored">
 					<ul>
-						<WNavItem>
-                            <WButton onClick={() => history.push('/mapselect')}>
+						<WNavItem hoverAnimation="lighten">
+                            <WButton wType="texted" onClick={() => history.push('/mapselect')}>
                                 <Logo className='logo'/>
                             </WButton>
 						</WNavItem>
@@ -79,10 +79,33 @@ const RegionSpreadsheet = (props) => {
 			</WLHeader>
             <WLMain>
                 {
+                    <div className="container-secondary">
+                        <WRow className="container-header">
+                            <WCol size="3">
+                                <div className="region-buttons">
+                                <WButton hoverAnimation="lighten" className="new-region-button" wType="texted">
+                                    <i className="material-icons">add</i>
+                                </WButton>
+                                <WButton hoverAnimation="lighten" wType="texted">
+                                    <i className="material-icons">undo</i>
+                                </WButton>
+                                <WButton hoverAnimation="lighten" wType="texted">
+                                    <i className="material-icons">redo</i>
+                                </WButton>
+                                </div>
+                            </WCol>
+                          
+                            <WCol size="8">
+                                <h3 className="region-name">
+                                    Region Name: {regionName}
+                                </h3>
 
-                    <div className="spreadsheet-container container-secondary">
-                        <SpreadsheetHeader/>
+                            </WCol>
+                        </WRow>
+                        <div className="spreadsheet-container">
+                            <SpreadsheetHeader/>
                       
+                        </div>
                     </div>
                 }
             </WLMain>

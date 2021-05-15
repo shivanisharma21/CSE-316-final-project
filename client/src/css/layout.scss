@@ -101,7 +101,7 @@ html {
 }
 
 .spreadsheet-container {
-    width: 100%;
+    width:10000%;
     height: 80%;
     position: relative;
     left: -13%;
@@ -132,4 +132,27 @@ html {
     margin-left: 150px;
     margin-top: -30px;
     
+}
+
+.container-header {
+    width: 100%;
+    height: 80%;
+    margin-top: 30px;
+    margin-left: 0px;
+    
+}
+
+.region-buttons {
+    float: right;
+    display: flex;
+    align-items: center;
+}
+
+.region-name {
+    float: right;
+    display: flex;
+    align-items: center;
+    margin-left: 400px;
+    margin-top: -20px;
+   
 }
