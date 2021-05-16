@@ -1,6 +1,7 @@
 import React, { useState, useEffect } 	from 'react';
 
 import { WButton, WRow, WCol, WInput } from 'wt-frontend';
+import DeleteRegion                    from '../modals/DeleteRegion';
 
 
 
@@ -8,6 +9,11 @@ const SpreadsheetEntry = (props) => {
     const name = props.entry.name;
     const capital = props.entry.capital;
     const leader = props.entry.leader;
+    const [showDelete, toggleShowDelete] 	= useState(false);
+
+    const setShowDelete = () => {
+		toggleShowDelete(!showDelete)
+	};
 
     const [editingName, toggleNameEdit] = useState(false);
     const [editingCapital, toggleCapitalEdit] = useState(false);
@@ -32,10 +38,11 @@ const SpreadsheetEntry = (props) => {
         props.editRegion(props.entry._id, 'leader', newLeader, prevLeader);
     }
     return (
+        <div>
         <WRow className='spreadsheet-entry'>
             <WCol size="3">
-                <WButton className="delete-region" wType="texted" >
-                <i className="material-icons">clear</i>
+                <WButton className="delete-region" wType="texted" hoverAnimation="lighten" clickAnimation="ripple-light" onClick={setShowDelete} >
+                    <i className="material-icons">clear</i>
                 </WButton>
                 {
                      editingName
@@ -86,6 +93,10 @@ const SpreadsheetEntry = (props) => {
             </WCol>
 
         </WRow>
+            {
+				showDelete && (<DeleteRegion deleteRegion={props.deleteRegion} entry={props.entry} index={props.index} setShowDelete={setShowDelete} showDelete={showDelete} />)
+			}
+        </div>
 
     );
 

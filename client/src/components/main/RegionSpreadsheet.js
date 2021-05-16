@@ -169,7 +169,7 @@ const RegionSpreadsheet = (props) => {
                                 maps &&
                                 currentMap.regions.map((entry, index) => (
                                     <SpreadsheetEntry
-                                        entry={entry} index={index}  key={entry._id}
+                                        entry={entry} index={index}  key={entry._id} deleteRegion={deleteRegion}
                                     />
                                 ))
                             }
