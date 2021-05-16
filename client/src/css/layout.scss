@@ -156,3 +156,25 @@ html {
     margin-top: -20px;
    
 }
+
+.spreadsheet-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.0rem;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    cursor: pointer;
+    margin-left: -10px;
+}
+
+.spreadsheet-entry {
+    height: 46px;
+    padding: 12px 24px;
+}
+
+.delete-region {
+    float: left;
+    display: flex;
+    margin-left: -25px;
+}

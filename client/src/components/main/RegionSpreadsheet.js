@@ -9,25 +9,31 @@ import UpdateAccount                    from '../modals/UpdateAccount';
 import NavbarOptions from '../navbar/NavbarOptions';
 import { useLocation } from "react-router-dom";
 import SpreadsheetHeader from '../main/SpreadsheetHeader';
+import SpreadsheetEntry from '../main/SpreadsheetEntry';
 import { useHistory } from 'react-router-dom';
+import {UpdateRegions_Transaction} from '../../utils/jsTPS';;
 
 
 const RegionSpreadsheet = (props) => {
 
-    const [currentMap, setCurrentMap] 		= useState({});
-    const [currentRegion, setCurrentRegion] = useState({});
-    const [showUpdate, toggleShowUpdate]    = useState(false);
-
     const location = useLocation();
-    let currentMapId = '';
+    const [currentMap, setCurrentMap]       = useState(location.state.map);
+    const [showUpdate, toggleShowUpdate]    = useState(false);
+    const [showUndo, setShowUndo]			= useState(false);
+	const [showRedo, setShowRedo]			= useState(false);
+
+    const [AddRegion]                       = useMutation(mutations.ADD_REGION);
+    const [DeleteRegion]                    = useMutation(mutations.DELETE_REGION);
+
+    
     let regionName = 'Default';
     if (location.state) {
-        currentMapId = location.state.id; 
+       
         regionName = location.state.name;
     }
 
     let maps = [];
-    let regions = [];
+
 
     const auth = props.user === null ? false : true;
 
@@ -45,12 +51,8 @@ const RegionSpreadsheet = (props) => {
 		const { loading, error, data } = await refetch();
 		if (data) {
 			maps = data.getAllMaps;
-			if (currentMapId) {
-				let tempID = currentMapId;
-				let map = maps.find(map => map._id === tempID);
-				setCurrentMap(map);
-                regions = currentMap.regions;
-			}
+            let map = maps.find(map => map._id === currentMap._id);
+            setCurrentMap(map);
 		}
 	}
 
@@ -60,7 +62,65 @@ const RegionSpreadsheet = (props) => {
 
     const history = useHistory();
 
+    const tpsUndo = async () => {
+		const retVal = await props.tps.undoTransaction();
+		refetchRegions(refetch);
+		if (!props.tps.hasTransactionToUndo()) {
+			setShowUndo(false);
+		}
+		setShowRedo(true);
+		return retVal;
+	}
 
+	const tpsRedo = async () => {
+		const retVal = await props.tps.doTransaction();
+		refetchRegions(refetch);
+		if (!props.tps.hasTransactionToRedo()) {
+			setShowRedo(false);
+		}
+		setShowUndo(true);
+		return retVal;
+	}
+
+
+    const addRegion = async () => {
+		const lastID = currentMap.regions.length >= 1 ? currentMap.regions[currentMap.regions.length - 1].id + 1 : 0;
+		const newRegion = {
+			_id: '',
+			id: lastID,
+			name: 'No Name',
+			capital: 'No Capital',
+			leader: 'No Leader',
+			landmarks: ''
+		};
+		let opcode = 1;
+		let regionID = newRegion._id;
+		let transaction = new UpdateRegions_Transaction(currentMap._id, regionID, newRegion, opcode, AddRegion, DeleteRegion);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	};
+
+
+	const deleteRegion = async (region, index) => {
+		let mapID = currentMap._id;
+		let regionID = region._id;
+		let opcode = 0;
+		let regionToDelete = {
+			_id: region._id,
+			id: region.id,
+			name: region.name,
+			capital: region.capital,
+			leader: region.leader,
+			landmarks: region.landmarks
+		}
+		let transaction = new UpdateRegions_Transaction(mapID, regionID, regionToDelete, opcode, AddRegion, DeleteRegion, index);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	};
+
+
+    const undoStyle = showUndo ? "undo-redo" : "undo-redo-disabled";
+    const redoStyle = showRedo ? "undo-redo" : "undo-redo-disabled";
     return (
         <WLayout wLayout="header-lside">
 			<WLHeader>
@@ -73,7 +133,7 @@ const RegionSpreadsheet = (props) => {
 						</WNavItem>
 					</ul>
 					<ul>
-                        <NavbarOptions fetchUser={props.fetchUser} setCurrentMap={setCurrentMap} setShowUpdate={setShowUpdate} username={username}/>
+                        <NavbarOptions fetchUser={props.fetchUser} setShowUpdate={setShowUpdate} username={username}/>
 					</ul>
 				</WNavbar>
 			</WLHeader>
@@ -83,13 +143,13 @@ const RegionSpreadsheet = (props) => {
                         <WRow className="container-header">
                             <WCol size="3">
                                 <div className="region-buttons">
-                                <WButton hoverAnimation="lighten" className="new-region-button" wType="texted">
-                                    <i className="material-icons">add</i>
+                                <WButton className="new-region-button" wType="texted" hoverAnimation="lighten" clickAnimation="ripple-light" onClick={addRegion}>
+                                    <i className="material-icons">add_box</i>
                                 </WButton>
-                                <WButton hoverAnimation="lighten" wType="texted">
+                                <WButton className={`${undoStyle}`} hoverAnimation="lighten" clickAnimation="ripple-light" wType="texted" onClick={tpsUndo}>
                                     <i className="material-icons">undo</i>
                                 </WButton>
-                                <WButton hoverAnimation="lighten" wType="texted">
+                                <WButton className={`${redoStyle}`} hoverAnimation="lighten" clickAnimation="ripple-light" wType="texted" onClick={tpsRedo}>
                                     <i className="material-icons">redo</i>
                                 </WButton>
                                 </div>
@@ -104,6 +164,16 @@ const RegionSpreadsheet = (props) => {
                         </WRow>
                         <div className="spreadsheet-container">
                             <SpreadsheetHeader/>
+                           
+                            {   
+                                maps &&
+                                currentMap.regions.map((entry, index) => (
+                                    <SpreadsheetEntry
+                                        entry={entry} index={index}  key={entry._id}
+                                    />
+                                ))
+                            }
+                           
                       
                         </div>
                     </div>

@@ -25,8 +25,7 @@ const regionSchema = new Schema(
 		landmarks: {
 			type: String,
 			required: true
-		},
-        subregions: [this]
+		}
 	}
 );
 

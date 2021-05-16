@@ -11,6 +11,7 @@ import MapEntry from '../main/MapEntry';
 
 const MapSelect = (props) => {
 
+    //props.tps.clearAllTransactions();
     let maps 							= [];
 	const [currentMap, setCurrentMap] 		= useState({});
     const [showUpdate, toggleShowUpdate]    = useState(false);

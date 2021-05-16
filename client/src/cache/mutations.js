@@ -53,3 +53,22 @@ export const DELETE_MAP = gql`
 		deleteMap(_id: $_id)
 	}
 `;
+
+export const ADD_REGION = gql`
+	mutation AddRegion($region: RegionInput!, $_id: String!, $index: Int!) {
+		addRegion(region: $region, _id: $_id, index: $index)
+	}
+`;
+
+export const DELETE_REGION = gql`
+	mutation DeleteRegion($regionId: String!, $_id: String!) {
+		deleteRegion(regionId: $regionId, _id: $_id) {
+			_id
+			id
+			name
+			capital
+			leader
+			landmarks
+		}
+	}
+`;

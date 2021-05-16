@@ -1,3 +1,61 @@
+export class jsTPS_Transaction {
+    constructor() {};
+    doTransaction() {};
+    undoTransaction () {};
+}
+
+export class UpdateRegions_Transaction extends jsTPS_Transaction {
+    // opcodes: 0 - delete, 1 - add 
+    constructor(mapID, regionID, region, opcode, addfunc, delfunc, index=-1) {
+        super();
+        this.mapID = mapID;
+		this.regionID = regionID;
+		this.region = region;
+        this.addFunction = addfunc;
+        this.deleteFunction = delfunc;
+        this.opcode = opcode;
+        this.index = index;
+    }
+    async doTransaction() {
+		let data;
+        this.opcode === 0 ? { data } = await this.deleteFunction({
+							variables: {regionId: this.regionID, _id: this.mapID}})
+						  : { data } = await this.addFunction({
+							variables: {region: this.region, _id: this.mapID, index: this.index}})  
+		if(this.opcode !== 0) {
+            this.region._id = this.regionID = data.addRegion;
+		}
+		return data;
+    }
+    // Since delete/add are opposites, flip matching opcode
+    async undoTransaction() {
+		let data;
+        this.opcode === 1 ? { data } = await this.deleteFunction({
+							variables: {regionId: this.regionID, _id: this.mapID}})
+                          : { data } = await this.addFunction({
+							variables: {region: this.region, _id: this.mapID, index: this.index}})
+		if(this.opcode !== 1) {
+            this.region._id = this.regionID = data.addRegion;
+        }
+		return data;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export class jsTPS {
     constructor() {
         // THE TRANSACTION STACK

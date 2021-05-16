@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { WButton, WRow, WCol } from 'wt-frontend';
 
 const SpreadsheetHeader = (props) => {
+
     return (
         <WRow className='spreadsheet-header'>
             <WCol size="3">
@@ -15,10 +16,10 @@ const SpreadsheetHeader = (props) => {
                 <WButton className='spreadsheet-section' wType="texted" >Leader</WButton>
             </WCol>
             <WCol size="2">
-                <WButton className='spreadsheet-section' wType="texted" >Flags</WButton>
+                <WButton disabled="true" className='spreadsheet-section' wType="texted" >Flags</WButton>
             </WCol>
             <WCol size="3">
-                <WButton className='spreadsheet-section' wType="texted" >Landmarks</WButton>
+                <WButton disabled="true" className='spreadsheet-section' wType="texted" >Landmarks</WButton>
             </WCol>
 
         </WRow>

@@ -41,7 +41,7 @@ const MapEntry = (props) => {
                 />
                 : <div onClick= {() => history.push({
                     pathname: '/regionspreadsheet',
-                    state: {id: entry._id, name: name}
+                    state: {map: entry, name: name}
                 })} >
                     {name}
                 </div>

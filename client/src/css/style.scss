@@ -21,6 +21,7 @@
     --crimson: #DC143C;
     --magenta: #FF00FF;
     --warm-white-transparent: #f9f7f111;
+    --warm-black: #322d2d;
 }
 html, body {
     margin: 0;
@@ -100,12 +101,25 @@ html, body {
     font-weight: bold !important;
 }
 .new-region-button {
-    padding: 0;
     color: green;
-}
-.region-buttons {
-    padding: 0;
 }
 .region-name {
     color: white;
+}
+.undo-redo {
+    color: white;
+}
+.undo-redo-disabled {
+    color: var(--warm-black);
+    pointer-events: none;
+}
+.spreadsheet-text {
+    color: black;
+}
+.spreadsheet-entry {
+    border-bottom: 1px solid;
+    transition: 0.1s ease-in-out;
+}
+.delete-region {
+    color: red;
 }

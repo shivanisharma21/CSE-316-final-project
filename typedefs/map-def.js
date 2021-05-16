@@ -16,7 +16,7 @@ const typeDefs = gql `
 		capital: String!
 		leader: String!
 		landmarks:  String!
-        subregions: [Region]
+        
 	}
 	extend type Query {
 		getAllMaps: [Map]
@@ -26,6 +26,8 @@ const typeDefs = gql `
 		addMap(map: MapInput!): String
 		editMap(_id: String!, name: String!) : String
 		deleteMap(_id: String!) : Boolean
+		addRegion(region: RegionInput!, _id: String!, index: Int!) : String
+		deleteRegion(regionId: String!, _id: String!) : [Region]
 	}
 	
 	input FieldInput {
@@ -47,7 +49,7 @@ const typeDefs = gql `
 		capital: String
 		leader: String
 		landmarks:  String
-        subregions: [RegionInput]
+        
 	}
 `;
 

@@ -15,7 +15,6 @@ const NavbarOptions = (props) => {
         const { data } = await props.fetchUser();
         if (data) {
             let reset = await client.resetStore();
-            if (reset) props.setCurrentMap({});
             history.push('/home');
         }
     };
