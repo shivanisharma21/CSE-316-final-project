@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom";
 import SpreadsheetHeader from '../main/SpreadsheetHeader';
 import SpreadsheetEntry from '../main/SpreadsheetEntry';
 import { useHistory } from 'react-router-dom';
-import {UpdateRegions_Transaction} from '../../utils/jsTPS';;
+import {UpdateRegions_Transaction, EditRegion_Transaction} from '../../utils/jsTPS';
 
 
 const RegionSpreadsheet = (props) => {
@@ -24,6 +24,7 @@ const RegionSpreadsheet = (props) => {
 
     const [AddRegion]                       = useMutation(mutations.ADD_REGION);
     const [DeleteRegion]                    = useMutation(mutations.DELETE_REGION);
+    const [UpdateRegionField]               = useMutation(mutations.UPDATE_REGION_FIELD);
 
     
     let regionName = 'Default';
@@ -118,6 +119,15 @@ const RegionSpreadsheet = (props) => {
 		tpsRedo();
 	};
 
+    
+	const editRegion = async (regionID, field, value, prev) => {
+		let mapID = currentMap._id;
+		let transaction = new EditRegion_Transaction(mapID, regionID, field, prev, value, UpdateRegionField);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+	};
+
 
     const undoStyle = showUndo ? "undo-redo" : "undo-redo-disabled";
     const redoStyle = showRedo ? "undo-redo" : "undo-redo-disabled";
@@ -169,7 +179,7 @@ const RegionSpreadsheet = (props) => {
                                 maps &&
                                 currentMap.regions.map((entry, index) => (
                                     <SpreadsheetEntry
-                                        entry={entry} index={index}  key={entry._id} deleteRegion={deleteRegion}
+                                        entry={entry} index={index}  key={entry._id} deleteRegion={deleteRegion} editRegion={editRegion}
                                     />
                                 ))
                             }

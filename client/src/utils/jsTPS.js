@@ -42,6 +42,38 @@ export class UpdateRegions_Transaction extends jsTPS_Transaction {
 }
 
 
+export class EditRegion_Transaction extends jsTPS_Transaction {
+	constructor(mapID, regionID, field, prev, update, callback) {
+		super();
+		this.mapID = mapID;
+		this.regionID = regionID;
+		this.field = field;
+		this.prev = prev;
+		this.update = update;
+		this.updateFunction = callback;
+	}	
+
+	async doTransaction() {
+		const { data } = await this.updateFunction({ 
+				variables:{  regionId: this.regionID, _id: this.mapID, 
+							 field: this.field, value: this.update
+						  }
+			});
+		return data;
+    }
+
+    async undoTransaction() {
+		const { data } = await this.updateFunction({ 
+				variables:{ regionId: this.regionID, _id: this.mapID, 
+							field: this.field, value: this.prev 
+						  }
+			});
+		return data;
+
+    }
+}
+
+
 
 
 
