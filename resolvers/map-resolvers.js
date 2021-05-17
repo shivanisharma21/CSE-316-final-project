@@ -109,6 +109,23 @@ module.exports = {
 			if(updated) return (regions);
 			else return (found.regions);
 		},
+		updateRegionLandmarks: async (_, args) => {
+			const { _id, regionId, field } = args;
+			let { value } = args
+			const mapId = new ObjectId(_id);
+			const found = await Map.findOne({_id: mapId});
+			let regions = found.regions;
+
+			regions.map(region => {
+				if(region._id.toString() === regionId) {	
+					
+					region[field] = value;
+				}
+			});
+			const updated = await Map.updateOne({_id: mapId}, { regions: regions })
+			if(updated) return (regions);
+			else return (found.regions);
+		},
 
 		sortColumn: async (_, args) => {
 			const { _id, field, direction} = args;

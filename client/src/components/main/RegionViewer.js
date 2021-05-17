@@ -7,18 +7,18 @@ import { WNavbar, WNavItem, WButton, WRow, WCol } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLFooter } from 'wt-frontend';
 import UpdateAccount                    from '../modals/UpdateAccount';
 import NavbarOptions from '../navbar/NavbarOptions';
-import { useLocation } from "react-router-dom";
-import SpreadsheetHeader from '../main/SpreadsheetHeader';
-import SpreadsheetEntry from '../main/SpreadsheetEntry';
+import { useLocation } from "react-router-dom"
 import { useHistory } from 'react-router-dom';
 import {EditRegion_Transaction} from '../../utils/jsTPS';
+import LandmarkEntry            from '../main/LandmarkEntry';
 
 const RegionViewer = (props) => {
 
     const location = useLocation();
     const [currentMap, setCurrentMap]       = useState(location.state.map);
+    const [currentRegion, setCurrentRegion] = useState(location.state.region);
     const [showUpdate, toggleShowUpdate]    = useState(false);
-    const [UpdateRegionField]               = useMutation(mutations.UPDATE_REGION_FIELD);
+    const [UpdateRegionLandmarks]               = useMutation(mutations.UPDATE_REGION_LANDMARKS);
 
 
     let regionName = 'Default';
@@ -26,8 +26,9 @@ const RegionViewer = (props) => {
        
         regionName = location.state.region.name;
     }
-
     let maps = [];
+    let regions = currentMap.regions;
+    let landmarks = currentRegion.landmarks;
 
 
     const auth = props.user === null ? false : true;
@@ -47,6 +48,8 @@ const RegionViewer = (props) => {
 		if (data) {
 			maps = data.getAllMaps;
             let map = maps.find(map => map._id === currentMap._id);
+            let region = map.regions.find(region => region._id === currentRegion._id);
+            setCurrentRegion(region);
             setCurrentMap(map);
 		}
 	}
@@ -98,6 +101,48 @@ const RegionViewer = (props) => {
 		refetchRegions(refetch);
 		return retVal;
 	}
+
+    const addLandmark = async () => {
+        let mapID = currentMap._id;
+        let regionID = location.state.region._id;
+        let field = "landmarks";
+        let prev = landmarks;
+        let newLandmarks = landmarks.map((x) => x);
+        newLandmarks.push("Untitled");
+        let value = newLandmarks;
+		let transaction = new EditRegion_Transaction(mapID, regionID, field, prev, value, UpdateRegionLandmarks);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+    }
+
+    const deleteLandmark = async (index) => {
+        let mapID = currentMap._id;
+        let regionID = location.state.region._id;
+        let field = "landmarks";
+        let prev = landmarks;
+        let newLandmarks = landmarks.filter((element, i) => i !== index);
+        let value = newLandmarks;
+		let transaction = new EditRegion_Transaction(mapID, regionID, field, prev, value, UpdateRegionLandmarks);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+
+    }
+
+    const editLandmarks = async (newName, index) => {
+		let mapID = currentMap._id;
+        let regionID = location.state.region._id;
+        let field = "landmarks";
+        let prev = landmarks;
+        let newLandmarks = landmarks.map((x) => x);
+        newLandmarks[index] = newName;
+        let value = newLandmarks;
+		let transaction = new EditRegion_Transaction(mapID, regionID, field, prev, value, UpdateRegionLandmarks);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+
+	};
 
     return (
         <WLayout wLayout="header-lside">
@@ -152,14 +197,27 @@ const RegionViewer = (props) => {
                             <WLayout wType="header">
                             <WLHeader>
                                 <WNavbar color="colored">
-                                    <h2 className="maps-header">Region Landmarks</h2>
-                                    <WButton shape= "rounded" size= "large" className="add-landmark-button"  hoverAnimation="darken">
+                                    <h2 className="maps-header">Region Landmarks:</h2>
+                                    <WButton shape= "rounded" size= "large" className="add-landmark-button"  hoverAnimation="darken" onClick={addLandmark}>
                                         <i className="material-icons new-region-button">add_box</i>
                                         Add Landmark
                                     </WButton>
                                     
                                 </WNavbar>
                             </WLHeader>
+                            <WLMain>
+                                <div className= "map-entries">
+                                {  
+                                    currentRegion.landmarks.map((entry, index) => (
+                                        <LandmarkEntry
+                                            entry={entry} index={index}
+                                            key={index} editLandmarks={editLandmarks}
+                                            deleteLandmark={deleteLandmark}
+                                        />
+                                        ))
+                                }
+                                </div>
+                            </WLMain>
 
 
                             </WLayout>

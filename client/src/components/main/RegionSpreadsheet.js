@@ -124,7 +124,7 @@ const RegionSpreadsheet = (props) => {
 			name: 'No Name',
 			capital: 'No Capital',
 			leader: 'No Leader',
-			landmarks: []
+			landmarks: ['Untitled']
 		};
 		let opcode = 1;
 		let regionID = newRegion._id;
