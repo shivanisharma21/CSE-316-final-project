@@ -91,9 +91,9 @@ const SpreadsheetEntry = (props) => {
                 <WButton disabled="true" className='spreadsheet-section' wType="texted" >Flags</WButton>
             </WCol>
             <WCol size="3">
-                <WButton className='spreadsheet-section' wType="texted" onClick= {() => history.push({
+                <WButton className='spreadsheet-text landmark-text' wType="texted" onClick= {() => history.push({
                     pathname: '/region/' + props.entry._id,
-                    state: {map: props.currentMap, region: props.entry}})}>Landmarks</WButton>
+                    state: {map: props.currentMap, region: props.entry}})}>{props.entry.landmarks.join(' , ')}</WButton>
             </WCol>
 
         </WRow>

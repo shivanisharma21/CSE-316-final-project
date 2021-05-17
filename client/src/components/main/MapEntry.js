@@ -46,10 +46,11 @@ const MapEntry = (props) => {
                     {name}
                 </div>
             }
-            <WButton className="map-entry-button" shape="rounded" size="small" onClick={handleNameEdit}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <WButton className="map-entry-button" shape="rounded" size="small" hoverAnimation="lighten" clickAnimation="ripple-light" onClick={handleNameEdit}>
                 <i className="material-icons">edit</i>
             </WButton>
-            <WButton className="map-delete-button" shape="rounded" size="small"  onClick={setShowDelete}>
+            <WButton className="map-delete-button" shape="rounded" size="small" hoverAnimation="lighten" clickAnimation="ripple-light"  onClick={setShowDelete}>
                 <i className="material-icons">delete_outline</i>
             </WButton>
             </WCol>

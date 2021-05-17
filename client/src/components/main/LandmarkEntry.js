@@ -42,10 +42,10 @@ const LandmarkEntry = (props) => {
                 </div>
             }
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <WButton className="map-entry-button" shape="rounded" size="small" onClick={handleNameEdit}>
+            <WButton className="map-entry-button" shape="rounded" size="small" hoverAnimation="lighten" clickAnimation="ripple-light" onClick={handleNameEdit}>
                 <i className="material-icons">edit</i>
             </WButton>
-            <WButton className="map-entry-button delete-region" shape="rounded"  wType="texted" size="small"  onClick={setShowDelete}>
+            <WButton className="map-entry-button delete-region" shape="rounded"  wType="texted" size="small" hoverAnimation="lighten" clickAnimation="ripple-light"  onClick={setShowDelete}>
                 <i className="material-icons">clear</i>
             </WButton>
             </WCol>

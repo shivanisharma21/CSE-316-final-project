@@ -115,6 +115,7 @@ html, body {
 }
 .spreadsheet-text {
     color: black;
+    font-weight: bold;
 }
 .spreadsheet-entry {
     border-bottom: 1px solid;
@@ -145,4 +146,7 @@ html, body {
 }
 .landmark-entry {
     color: white !important;
+}
+.landmark-text {
+    color: deepskyblue !important;
 }
