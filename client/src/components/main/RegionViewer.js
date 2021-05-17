@@ -18,7 +18,7 @@ const RegionViewer = (props) => {
     const [currentMap, setCurrentMap]       = useState(location.state.map);
     const [currentRegion, setCurrentRegion] = useState(location.state.region);
     const [showUpdate, toggleShowUpdate]    = useState(false);
-    const [UpdateRegionLandmarks]               = useMutation(mutations.UPDATE_REGION_LANDMARKS);
+    const [UpdateRegionLandmarks]           = useMutation(mutations.UPDATE_REGION_LANDMARKS);
 
 
     let regionName = 'Default';
@@ -27,8 +27,8 @@ const RegionViewer = (props) => {
         regionName = location.state.region.name;
     }
     let maps = [];
-    let regions = currentMap.regions;
     let landmarks = currentRegion.landmarks;
+    let regionIndex = currentMap.regions.findIndex(region => region._id === currentRegion._id);
 
 
     const auth = props.user === null ? false : true;
@@ -144,6 +144,30 @@ const RegionViewer = (props) => {
 
 	};
 
+    const handleMoveBack = async () => {
+        let nextRegion = currentMap.regions[regionIndex - 1];
+
+        history.push({
+            pathname: '/region/' + currentMap.regions[regionIndex - 1]._id,
+            state: {map: currentMap, region: nextRegion}});
+
+        setCurrentRegion(nextRegion);
+        
+    }
+
+    const handleMoveForward = async () => {
+        let nextRegion = currentMap.regions[regionIndex + 1];
+
+        history.push({
+            pathname: '/region/' + currentMap.regions[regionIndex + 1]._id,
+            state: {map: currentMap, region: nextRegion}});
+
+        setCurrentRegion(nextRegion);
+    }
+
+    const backStyle = (regionIndex === 0) ? "back-arrow-disabled" : "back-arrow";
+    const forwardStyle = (regionIndex === (currentMap.regions.length - 1)) ? "forward-arrow-disabled" : "forward-arrow"; 
+
     return (
         <WLayout wLayout="header-lside">
 			<WLHeader>
@@ -164,14 +188,14 @@ const RegionViewer = (props) => {
                     </ul>
                     <ul>
                         <WNavItem>
-                            <WButton className="back-arrow" wType="texted">
+                            <WButton className={`${backStyle}`} wType="texted" onClick= {handleMoveBack}>
                                 <i className="material-icons">arrow_back</i>
                             </WButton>
                         </WNavItem>
                     </ul>
                     <ul>
                         <WNavItem>
-                            <WButton className="forward-arrow" wType="texted">
+                            <WButton className={`${forwardStyle}`} wType="texted" onClick= {handleMoveForward}>
                                 <i className="material-icons">arrow_forward</i>
                             </WButton>
                         </WNavItem>

@@ -127,8 +127,16 @@ html, body {
 .back-arrow {
     color: white;
 }
+.back-arrow-disabled {
+    color: var(--warm-black);
+    pointer-events: none;
+}
 .forward-arrow {
     color: white;
+}
+.forward-arrow-disabled {
+    color: var(--warm-black);
+    pointer-events: none;
 }
 .region-viewer-text {
     color: white;
