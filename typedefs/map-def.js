@@ -15,7 +15,7 @@ const typeDefs = gql `
 		name: String!
 		capital: String!
 		leader: String!
-		landmarks:  String!
+		landmarks: [String!]
         
 	}
 	extend type Query {
@@ -50,7 +50,7 @@ const typeDefs = gql `
 		name: String
 		capital: String
 		leader: String
-		landmarks:  String
+		landmarks: [String]
         
 	}
 `;

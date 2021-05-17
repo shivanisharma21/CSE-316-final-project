@@ -58,6 +58,36 @@ const RegionSpreadsheet = (props) => {
             setCurrentMap(map);
 		}
 	}
+    const handleUndo = (event) => {
+		if (event.ctrlKey && event.key === 'z') {
+			tpsUndo();
+		}
+	};
+
+	const handleRedo = (event) => {
+		if (event.ctrlKey && event.key === 'y') {
+			tpsRedo();
+		}
+	};
+
+	useEffect (() => {
+		document.addEventListener('keydown', handleUndo);
+
+		return () => {
+			document.removeEventListener('keydown', handleUndo);
+		};
+		  
+	}, [handleUndo]);
+
+	useEffect (() => {
+		document.addEventListener('keydown', handleRedo);
+
+		return () => {
+			document.removeEventListener('keydown', handleRedo);
+		};
+		  
+	}, [handleRedo]);
+	
 
     const setShowUpdate = () => {
 		toggleShowUpdate(!showUpdate);
