@@ -85,3 +85,16 @@ export const UPDATE_REGION_FIELD = gql`
 		}
 	}
 `;
+
+export const SORT_COLUMN = gql`
+	mutation SortColumn($_id: String!, $field: String!, $direction: Int!) {
+		sortColumn(_id: $_id, field: $field, direction: $direction) {
+			_id
+			id
+			name
+			capital
+			leader
+			landmarks
+		}
+	}
+`;

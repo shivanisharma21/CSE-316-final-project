@@ -21,10 +21,12 @@ const RegionSpreadsheet = (props) => {
     const [showUpdate, toggleShowUpdate]    = useState(false);
     const [showUndo, setShowUndo]			= useState(false);
 	const [showRedo, setShowRedo]			= useState(false);
+    const [sorted, setSorted]				= useState(false);
 
     const [AddRegion]                       = useMutation(mutations.ADD_REGION);
     const [DeleteRegion]                    = useMutation(mutations.DELETE_REGION);
     const [UpdateRegionField]               = useMutation(mutations.UPDATE_REGION_FIELD);
+    const [SortColumn] 				        = useMutation(mutations.SORT_COLUMN);
 
     
     let regionName = 'Default';
@@ -128,6 +130,25 @@ const RegionSpreadsheet = (props) => {
 
 	};
 
+    const sortColumnItems = async (field) => {
+		let _id = currentMap._id;
+		let direction = 1;
+		if (sorted) {
+			direction = -1;
+			setSorted(false);
+		}
+		if (direction === 1) {
+			setSorted(true);
+		}
+		const { data } = await SortColumn({
+			variables:{ _id: _id, field: field,
+						direction: direction
+					}
+		});
+		refetchRegions(refetch);
+
+	}
+
 
     const undoStyle = showUndo ? "undo-redo" : "undo-redo-disabled";
     const redoStyle = showRedo ? "undo-redo" : "undo-redo-disabled";
@@ -173,7 +194,7 @@ const RegionSpreadsheet = (props) => {
                             </WCol>
                         </WRow>
                         <div className="spreadsheet-container">
-                            <SpreadsheetHeader/>
+                            <SpreadsheetHeader sortColumnItems={sortColumnItems}/>
                            
                             {   
                                 maps &&

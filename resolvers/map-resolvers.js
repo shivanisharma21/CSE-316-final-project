@@ -109,5 +109,37 @@ module.exports = {
 			if(updated) return (regions);
 			else return (found.regions);
 		},
+
+		sortColumn: async (_, args) => {
+			const { _id, field, direction} = args;
+			const mapId = new ObjectId(_id);
+			const found = await Map.findOne({_id: mapId});
+			let regions = found.regions;
+			
+			if (field === "name") {
+				if (direction === 1)
+					regions = found.regions.sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : -1);
+				else if (direction === -1)
+					regions = found.regions.sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? -1 : 1);
+				const updated = await Map.updateOne({_id: mapId}, { regions: regions })
+				if(updated) return (regions);
+			}
+			if (field === "capital") {
+				if (direction === 1)
+					regions = found.regions.sort((a, b) => (a.capital.toUpperCase() > b.capital.toUpperCase()) ? 1 : -1);
+				else if (direction === -1)
+					regions = found.regions.sort((a, b) => (a.capital.toUpperCase() > b.capital.toUpperCase()) ? -1 : 1);
+				const updated = await Map.updateOne({_id: mapId}, { regions: regions })
+				if(updated) return (regions);
+			}
+			if (field === "leader") {
+				if (direction === 1)
+					regions = found.regions.sort((a, b) => (a.leader.toUpperCase() > b.leader.toUpperCase()) ? 1 : -1);
+				else if (direction === -1)
+					regions = found.regions.sort((a, b) => (a.leader.toUpperCase() > b.leader.toUpperCase()) ? -1 : 1);
+				const updated = await Map.updateOne({_id: mapId}, { regions: regions })
+				if(updated) return (regions);
+			}
+		},
 	}
 }
