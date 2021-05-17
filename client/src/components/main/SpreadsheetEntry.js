@@ -2,6 +2,7 @@ import React, { useState, useEffect } 	from 'react';
 
 import { WButton, WRow, WCol, WInput } from 'wt-frontend';
 import DeleteRegion                    from '../modals/DeleteRegion';
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -37,6 +38,7 @@ const SpreadsheetEntry = (props) => {
         const prevLeader = leader;
         props.editRegion(props.entry._id, 'leader', newLeader, prevLeader);
     }
+    const history = useHistory();
     return (
         <div>
         <WRow className='spreadsheet-entry'>
@@ -86,10 +88,12 @@ const SpreadsheetEntry = (props) => {
             </WCol>
 
             <WCol size="2">
-                <WButton className='spreadsheet-section' wType="texted" >Flags</WButton>
+                <WButton disabled="true" className='spreadsheet-section' wType="texted" >Flags</WButton>
             </WCol>
             <WCol size="3">
-                <WButton className='spreadsheet-section' wType="texted" >Landmarks</WButton>
+                <WButton className='spreadsheet-section' wType="texted" onClick= {() => history.push({
+                    pathname: '/region/' + props.entry._id,
+                    state: {map: props.currentMap, region: props.entry}})}>Landmarks</WButton>
             </WCol>
 
         </WRow>

@@ -124,7 +124,7 @@ const RegionSpreadsheet = (props) => {
 			name: 'No Name',
 			capital: 'No Capital',
 			leader: 'No Leader',
-			landmarks: ''
+			landmarks: []
 		};
 		let opcode = 1;
 		let regionID = newRegion._id;
@@ -230,7 +230,7 @@ const RegionSpreadsheet = (props) => {
                                 maps &&
                                 currentMap.regions.map((entry, index) => (
                                     <SpreadsheetEntry
-                                        entry={entry} index={index}  key={entry._id} deleteRegion={deleteRegion} editRegion={editRegion}
+                                        entry={entry} index={index}  key={entry._id} deleteRegion={deleteRegion} editRegion={editRegion} currentMap={currentMap}
                                     />
                                 ))
                             }

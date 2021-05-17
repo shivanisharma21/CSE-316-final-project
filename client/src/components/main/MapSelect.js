@@ -107,7 +107,7 @@ const MapSelect = (props) => {
                                 <WNavbar color="colored">
                                     <h2 className="maps-header">Your Maps</h2>
                                     <WButton shape= "rounded" size= "large" className="new-map-button" onClick={addMap}  hoverAnimation="darken">
-                                    Create New Map
+                                        Create New Map
                                     </WButton>
                                     
                                 </WNavbar>

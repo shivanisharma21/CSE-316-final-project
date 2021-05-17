@@ -178,3 +178,51 @@ html {
     display: flex;
     margin-left: -25px;
 }
+
+.navbar-text {
+    margin-right: 450px;
+}
+
+.back-arrow {
+    margin-left: -20px;
+}
+
+.forward-arrow {
+    margin-left: -20px;
+}
+
+.region-viewer-name {
+    margin-left: -100px;
+    
+    margin-top: 100px;
+}
+
+.region-viewer-parent {
+    margin-left: -330px;
+    margin-top: 150px;
+    cursor: pointer;
+}
+
+.region-viewer-capital {
+    margin-left: -290px;
+    margin-top: 200px;
+}
+
+.region-viewer-leader {
+    margin-left: -330px;
+    margin-top: 250px;
+}
+
+.region-viewer-num {
+    margin-left: -290px;
+    margin-top: 300px;
+}
+
+.landmarks-container {
+    width: 600px;
+    height: 600px;
+    position: relative;
+    left: 15%;
+    top: 15%;
+    overflow-y: scroll;
+}
